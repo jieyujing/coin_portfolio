@@ -4,7 +4,7 @@ status: backlog
 created: 2025-09-06T08:34:36Z
 progress: 0%
 prd: .claude/prds/risk-parity-crypto-backtest.md
-github: [Will be updated when synced to GitHub]
+github: https://github.com/jieyujing/coin_portfolio/issues/1
 ---
 
 # Epic: Risk Parity Crypto Backtest
@@ -52,29 +52,28 @@ Build a focused cryptocurrency backtesting platform that implements risk parity 
 Implementation broken down into 8 focused tasks:
 
 ### Core Engine Tasks (Critical Path)
-- [ ] **[Task 001](tasks/task-001-okx-api-integration.md)**: OKX API Integration (16h)
+- [ ] **[#2](https://github.com/jieyujing/coin_portfolio/issues/2)**: OKX API Integration (16h)
   - Market cap rankings, historical data, rate limiting, caching
-- [ ] **[Task 002](tasks/task-002-risk-parity-calculator.md)**: Risk Parity Calculator (20h)  
+- [ ] **[#3](https://github.com/jieyujing/coin_portfolio/issues/3)**: Risk Parity Calculator (20h)  
   - Equal risk contribution algorithm, correlation matrices, optimization
-- [ ] **[Task 003](tasks/task-003-rebalancing-logic.md)**: Rebalancing Logic Engine (14h)
+- [ ] **[#4](https://github.com/jieyujing/coin_portfolio/issues/4)**: Rebalancing Logic Engine (14h)
   - 5/25 rules, buffer zones, transaction costs, portfolio tracking
 
 ### User Interface Tasks
-- [ ] **[Task 004](tasks/task-004-react-dashboard.md)**: React Dashboard Interface (18h)
+- [ ] **[#5](https://github.com/jieyujing/coin_portfolio/issues/5)**: React Dashboard Interface (18h)
   - Parameter controls, interactive charts, results display, real-time updates
-- [ ] **[Task 005](tasks/task-005-benchmark-engine.md)**: Benchmark Comparison Engine (12h)
+- [ ] **[#6](https://github.com/jieyujing/coin_portfolio/issues/6)**: Benchmark Comparison Engine (12h)
   - Bitcoin and equal-weight benchmarks, performance metrics, statistical analysis
 
 ### Supporting Tasks
-- [ ] **[Task 006](tasks/task-006-export-system.md)**: Export System Implementation (10h)
+- [ ] **[#7](https://github.com/jieyujing/coin_portfolio/issues/7)**: Export System Implementation (10h)
   - CSV downloads, transaction logs, performance summaries
-- [ ] **[Task 007](tasks/task-007-performance-testing.md)**: Performance Testing & Validation (16h)
+- [ ] **[#8](https://github.com/jieyujing/coin_portfolio/issues/8)**: Performance Testing & Validation (16h)
   - Calculation accuracy, load testing, historical validation
-- [ ] **[Task 008](tasks/task-008-documentation-guide.md)**: Documentation & User Guide (12h)
+- [ ] **[#9](https://github.com/jieyujing/coin_portfolio/issues/9)**: Documentation & User Guide (12h)
   - User tutorials, API docs, methodology explanations
 
 **Total Estimated Effort: 118 hours (≈ 15 weeks at 8h/week)**
-
 ## Dependencies
 - **External**: OKX V5 API availability and stable market data
 - **Libraries**: pandas/numpy for calculations, React for UI
