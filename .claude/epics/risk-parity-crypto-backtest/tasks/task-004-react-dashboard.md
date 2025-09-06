@@ -1,0 +1,178 @@
+---
+name: react-dashboard
+title: React Dashboard Interface
+epic: risk-parity-crypto-backtest
+status: pending
+priority: high
+created: 2025-09-06T08:38:40Z
+updated: 2025-09-06T08:38:40Z
+estimated_hours: 18
+dependencies: [risk-parity-calculator, rebalancing-logic]
+tags: [frontend, ui, visualization]
+---
+
+# Task: React Dashboard Interface
+
+## Description
+Build a clean, responsive React dashboard for cryptocurrency portfolio backtesting with interactive parameter controls, real-time results visualization, and intuitive user experience focused on professional traders and analysts.
+
+## Acceptance Criteria
+- [ ] **Parameter Controls**: Date range picker, asset count slider, rebalancing frequency selector
+- [ ] **Interactive Charts**: NAV performance curves with zoom/pan, drawdown visualization
+- [ ] **Results Display**: Performance metrics table with benchmark comparisons
+- [ ] **Real-time Updates**: Instant results when parameters change (debounced API calls)
+- [ ] **Responsive Design**: Works seamlessly on desktop and tablet devices
+- [ ] **Loading States**: Progressive loading indicators and skeleton screens
+- [ ] **Error Handling**: User-friendly error messages and retry mechanisms
+
+## Technical Requirements
+### Component Architecture
+```
+Dashboard (Container)
+├── ParameterPanel
+│   ├── DateRangePicker
+│   ├── AssetCountSlider
+│   ├── RebalancingFrequencySelect
+│   └── InitialCapitalInput
+├── ChartsSection
+│   ├── NAVChart (Recharts/Chart.js)
+│   ├── DrawdownChart
+│   └── AllocationChart
+├── ResultsTable
+│   ├── PerformanceMetrics
+│   ├── BenchmarkComparison
+│   └── RiskStatistics
+└── ExportButton
+```
+
+### Parameter Controls
+- **Date Range**: Calendar picker with presets (1Y, 2Y, 3Y, 5Y, Max)
+- **Asset Count**: Slider from 5 to 20 with real-time top-N display
+- **Rebalancing**: Dropdown (Weekly, Bi-weekly, Monthly, 5/25 Rules)
+- **Initial Capital**: Input field with currency formatting ($10,000 default)
+- **Advanced**: Collapsible section for buffer zones and cost parameters
+
+### Chart Specifications
+```javascript
+// NAV Chart Configuration
+const navChartConfig = {
+  type: 'line',
+  data: {
+    datasets: [
+      { label: 'Risk Parity Strategy', color: '#2563eb' },
+      { label: 'Bitcoin Benchmark', color: '#f97316' },
+      { label: 'Equal Weight Benchmark', color: '#10b981' }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { intersect: false },
+    plugins: {
+      zoom: { enabled: true },
+      tooltip: { mode: 'nearest' }
+    }
+  }
+};
+```
+
+## Files to Create/Modify
+- `frontend/src/components/Dashboard.jsx` - Main dashboard container
+- `frontend/src/components/ParameterPanel.jsx` - Parameter controls
+- `frontend/src/components/ChartsSection.jsx` - Visualization components
+- `frontend/src/components/ResultsTable.jsx` - Performance metrics display
+- `frontend/src/hooks/useBacktest.js` - Custom hook for API integration
+- `frontend/src/utils/formatters.js` - Number and date formatting utilities
+- `frontend/src/styles/Dashboard.module.css` - Component-specific styles
+
+### API Integration
+```javascript
+// Custom hook for backtesting
+const useBacktest = (parameters) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const runBacktest = useCallback(
+    debounce(async (params) => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const response = await api.post('/backtest', params);
+        setData(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }, 1000),
+    []
+  );
+
+  useEffect(() => {
+    if (parameters) runBacktest(parameters);
+  }, [parameters, runBacktest]);
+
+  return { data, loading, error, runBacktest };
+};
+```
+
+## Implementation Details
+### State Management
+- **React State**: Use useState for local component state
+- **Parameter State**: Centralized in Dashboard component, passed to children
+- **API State**: Managed by custom useBacktest hook with error handling
+- **Chart State**: Local state for zoom levels and interactive features
+
+### Performance Optimizations
+- **Debounced API Calls**: Prevent excessive requests during parameter changes
+- **Memoized Components**: Use React.memo for expensive chart components
+- **Lazy Loading**: Code-split charts and advanced features
+- **Virtual Scrolling**: For large data tables if needed
+
+### User Experience Features
+- **Progressive Disclosure**: Basic parameters visible, advanced options collapsed
+- **Smart Defaults**: Reasonable starting parameters for new users
+- **Keyboard Navigation**: Full accessibility compliance
+- **Mobile Responsive**: Touch-friendly controls and readable charts
+
+## Testing Strategy
+- **Component Tests**: React Testing Library for user interactions
+- **Visual Tests**: Screenshot testing for chart accuracy
+- **Integration Tests**: Full user workflows with mocked API
+- **Accessibility Tests**: Screen reader and keyboard navigation
+- **Performance Tests**: Bundle size and rendering benchmarks
+
+## Success Metrics
+- **Usability**: Users complete first backtest within 60 seconds
+- **Performance**: Parameter changes reflect in UI within 2 seconds
+- **Mobile Experience**: >90% feature parity on tablet devices
+- **Error Recovery**: Clear error messages with actionable guidance
+- **Professional Feel**: Visual design comparable to Bloomberg Terminal
+
+## Dependencies
+- React 18+ with hooks and concurrent features
+- Recharts or Chart.js for financial visualizations
+- Axios or fetch for API communication
+- date-fns or dayjs for date manipulation
+- Tailwind CSS or Material-UI for styling
+
+## Design Specifications
+### Color Palette
+- **Primary**: Blue (#2563eb) for strategy performance
+- **Secondary**: Orange (#f97316) for Bitcoin benchmark
+- **Success**: Green (#10b981) for positive returns
+- **Warning**: Yellow (#f59e0b) for risk warnings
+- **Error**: Red (#ef4444) for losses and errors
+
+### Typography
+- **Headers**: Inter or system font, 24px/20px/16px
+- **Body**: 14px line height 1.5 for readability
+- **Numbers**: Tabular numbers for financial data alignment
+- **Monospace**: For precise numerical displays
+
+## Notes
+- Prioritize data visualization clarity over visual effects
+- Ensure charts are readable in both light and dark themes
+- Consider implementing keyboard shortcuts for power users
+- Plan for future features like strategy comparison and saved configurations
